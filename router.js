@@ -11,9 +11,5 @@ Router.map(function () {
     path: '/'
   });
 
-  this.route('')
-
-  this.route('leads', {
-    path: '/leads'
-  });
+  this.route('leads');
 })
