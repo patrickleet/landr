@@ -1,0 +1,144 @@
+<head>
+  <title>CabPool</title>
+  <link rel="shortcut icon" href="icon.png" />
+
+  <!--set viewport to device size for responsive layouts-->
+  <meta name="viewport" content="initial-scale=1.0">
+
+  <!--apple-->
+  <link rel="apple-touch-icon" href="icon.png"  />
+  <link rel="apple-touch-icon" sizes="72x72" href="icon.png"  />
+  <link rel="apple-touch-icon" sizes="114x114" href="icon.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="icon.png" />
+  <link rel="apple-touch-startup-image" href="icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+<body>
+  {{yield}}
+</body>
+
+<template name="home">
+
+  <!-- Full Page Image Header Area -->
+  <div id="top" class="header">
+    {{> signup}}
+  </div>
+  <!-- /Full Page Image Header Area -->
+
+  <!-- Intro -->
+  <div id="intro" class="intro">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center">
+          <h2>Cabs are more fun when you share</h2>
+          <p class="lead">Whether you're going to the same event, or the same neighborhood, CabPool helps you meet new people and save money.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Intro -->
+
+  <!-- Services -->
+  <div id="services" class="services">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4 text-center">
+          <h2>Why CabPool?</h2>
+          <hr>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-md-offset-2 text-center">
+          <div class="service-item">
+            <i class="service-icon icon-group"></i>
+            <h4>Grow Your Network</h4>
+            <p>Connect with like-minded individuals going to the same events.</p>
+          </div>
+        </div>
+        <div class="col-md-2 text-center">
+          <div class="service-item">
+            <i class="service-icon icon-heart"></i>
+            <h4>Meet Someone Special</h4>
+            <p>And just maybe they'll think you're special, too. If not, it's only a cab ride.</p>
+          </div>
+        </div>
+        <div class="col-md-2 text-center">
+          <div class="service-item">
+            <i class="service-icon icon-comments"></i>
+            <h4>Make Friends</h4>
+            <p>Good conversation leads to lasting friendships.</p>
+          </div>
+        </div>
+        <div class="col-md-2 text-center">
+          <div class="service-item">
+            <i class="service-icon icon-building"></i>
+            <h4>Get Downtown</h4>
+            <p>Or just get downtown.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Services -->
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center">
+          <hr>
+          <p>Copyright &copy; CabPool 2013</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- /Footer -->
+</template>
+
+
+<template name="signup">
+  {{#if done}}
+    <div class="vert-text">
+      <h1>CabPool</h1>
+      <h3>Thanks for signing up.</h3>
+    </div>
+  {{else}}
+    <div class="vert-text">
+      <h1>CabPool</h1>
+      <h3>Share a Cab. <br/>Make connections. Save money.</h3>
+      <form role="form" class="col-lg-offset-4 col-lg-4">
+        <div class="form-group">
+          <label for="email">Enter your email to learn more</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter email">
+        </div>
+        <button type="submit" class="btn btn-default">Go</button>
+      </form>
+    </div>
+  {{/if}}
+</template>
+
+<template name="leads">
+  <h1>App has been viewed {{loads}} times. {{leadsCount}} have signed up.</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Event</th>
+        <th>From</th>
+        <th>Referrer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each leads}}
+        <tr>
+          <td>{{email}}</td>
+          <td>{{event}}</td>
+          <td>{{from}}</td>
+          <td>{{referrer}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
