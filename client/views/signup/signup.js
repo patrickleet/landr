@@ -1,6 +1,6 @@
 Template.signup.helpers({
-  done: function() {
-    return Session.get('done')
+  hasSignedUp: function() {
+    return Session.get('hasSignedUp')
   }
 });
 
@@ -12,6 +12,7 @@ Template.signup.events({
 //        , event = tmpl.find('input#event').value
 //        , from = tmpl.find('select#from').value
       , doc = {
+        landerId: tmpl.data._id,
         email: email,
         referrer: document.referrer,
         timestamp: new Date(),
@@ -20,7 +21,7 @@ Template.signup.events({
       }
 
     leads.insert(doc);
-    Session.set('done', true);
+    Session.set('hasSignedUp', true);
 
   }
 });

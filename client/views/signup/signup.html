@@ -1,20 +1,20 @@
 <template name="signup">
-  {{#if done}}
-  <div class="vert-text">
-    <h1>CabPool</h1>
-    <h3>Thanks for signing up.</h3>
-  </div>
+  {{#if hasSignedUp}}
+    <div class="vert-text">
+      <h1>{{title}}</h1>
+      <h3>{{hasSignedUpLead}}</h3>
+    </div>
   {{else}}
-  <div class="vert-text">
-    <h1>CabPool</h1>
-    <h3>Share a Cab. <br/>Make connections. Save money.</h3>
-    <form role="form" class="col-lg-offset-4 col-lg-4">
-      <div class="form-group">
-        <label for="email">Enter your email to learn more</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter email">
-      </div>
-      <button type="submit" class="btn btn-default">Go</button>
-    </form>
-  </div>
+    <div class="vert-text">
+      <h1>{{title}}</h1>
+      <h3>{{lead}}</h3>
+      <form role="form" class="col-lg-offset-4 col-lg-4">
+        <div class="form-group">
+          <label for="email">Enter your email to learn more</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter email">
+        </div>
+        <button type="submit" class="btn btn-default">Go</button>
+      </form>
+    </div>
   {{/if}}
 </template>
