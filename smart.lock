@@ -4,7 +4,8 @@
     "basePackages": {
       "bootstrap-3": {},
       "font-awesome": {},
-      "iron-router": {}
+      "iron-router": {},
+      "accounts-entry": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -19,8 +20,13 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.5.4",
-        "commit": "3e0e22ff85630b7503d0daa1538c6d90abb84020"
+        "tag": "v0.6.0",
+        "commit": "c63e92d24c8210e2304ff5fed1b5c463394aeaf6"
+      },
+      "accounts-entry": {
+        "git": "https://github.com/BeDifferential/accounts-entry.git",
+        "tag": "v0.4.0",
+        "commit": "0c2986e47d8f00f4e0c87eb1038d9b898744c3ea"
       }
     }
   }

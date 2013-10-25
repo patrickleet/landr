@@ -11,3 +11,7 @@ bootstrap-3
 font-awesome
 iron-router
 less
+accounts-ui
+accounts-password
+accounts-entry
+coffeescript
