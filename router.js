@@ -11,10 +11,9 @@ Router.map(function () {
     path: '/'
   });
 
-  this.route('leads', {
-    path: '/leads',
-    data: function() {
+  this.route('')
 
-    }
+  this.route('leads', {
+    path: '/leads'
   });
 })
