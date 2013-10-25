@@ -1,0 +1,23 @@
+<template name="leads">
+  <h1>App has been viewed {{loads}} times. {{leadsCount}} have signed up.</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Email</th>
+      <th>Event</th>
+      <th>From</th>
+      <th>Referrer</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each leads}}
+    <tr>
+      <td>{{email}}</td>
+      <td>{{event}}</td>
+      <td>{{from}}</td>
+      <td>{{referrer}}</td>
+    </tr>
+    {{/each}}
+    </tbody>
+  </table>
+</template>

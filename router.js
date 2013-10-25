@@ -12,6 +12,9 @@ Router.map(function () {
   });
 
   this.route('leads', {
-    path: '/leads'
+    path: '/leads',
+    data: function() {
+
+    }
   });
 })
