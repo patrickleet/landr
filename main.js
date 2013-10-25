@@ -1,5 +1,4 @@
-leads = new Meteor.Collection('leads')
-loads = new Meteor.Collection('loads')
+
 
 if (Meteor.isClient) {
   Meteor.startup(function() {
