@@ -8,16 +8,13 @@ Template.signup.events({
   'submit form' : function (evt, tmpl) {
     evt.preventDefault();
 
-    var email = tmpl.find('input#email').value
+    var phone = tmpl.find('input#phone').value
 //        , event = tmpl.find('input#event').value
 //        , from = tmpl.find('select#from').value
       , doc = {
         landerId: tmpl.data._id,
-        email: email,
-        referrer: document.referrer,
-        timestamp: new Date(),
-        event: '',
-        from: ''
+        phone: phone,
+        created: new Date()
       }
 
     leads.insert(doc);
