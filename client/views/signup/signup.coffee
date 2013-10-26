@@ -6,6 +6,7 @@ Template.signup.helpers(
 Template.signup.events(
   'submit form' : (evt, tmpl) ->
     evt.preventDefault()
+
     options = {
       landerId: tmpl.data._id
     }

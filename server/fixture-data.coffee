@@ -6,8 +6,9 @@ Meteor.startup () ->
       lead: 'A landing page for the real world.'
       hasSignedUpLead: 'Thanks for signing up.'
       views: 0
+      createAccount: true
       collectEmail: true
-      collectPhone: false
+      collectPhone: true
       collectName: true
       services: [
         {

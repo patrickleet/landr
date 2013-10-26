@@ -11,11 +11,13 @@ class @Lander
       'collectEmail'
       'collectPhone'
       'collectName'
+      'createAccount'
       'services'
     )
 
     defaults =
       views: 0
+      createAccount: false
       collectEmail: true
       collectName: false
       collectPhone: false

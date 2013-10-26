@@ -7,7 +7,6 @@ standard-app-packages
 insecure
 preserve-inputs
 bootstrap-3
-iron-router
 less
 accounts-ui
 accounts-password
@@ -16,3 +15,5 @@ coffeescript
 autopublish
 font-awesome-4
 ejson
+iron-router
+email
