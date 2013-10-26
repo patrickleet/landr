@@ -119,3 +119,4 @@ Meteor.startup () ->
           interested: 0
         }
       ]
+

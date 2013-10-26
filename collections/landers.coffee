@@ -1,15 +1,9 @@
 class @Lander
   constructor: (options) ->
     check(options, Object)
-    defaults =
-      views: 0
-      collectEmail: true
-      collectName: false
-      collectPhone: false
-      hasSignedUpLead: 'Thanks for signing up.'
 
-    options = _.defaults(options, defaults)
     options = _.pick(options,
+      '_id'
       'title'
       'lead'
       'hasSignedUpLead'
@@ -19,6 +13,16 @@ class @Lander
       'collectName'
       'services'
     )
+
+    defaults =
+      views: 0
+      collectEmail: true
+      collectName: false
+      collectPhone: false
+      hasSignedUpLead: 'Thanks for signing up.'
+
+    options = _.defaults(options, defaults)
+
     _.extend(@, options)
 
 @Lander.compare = (a, b) ->
@@ -32,3 +36,8 @@ class @Lander
   transform: (doc) ->
     return new Lander(doc);
 })
+
+Meteor.methods
+  increaseLanderViews: (landerId) ->
+    check(landerId, String)
+    landers.update(landerId, {$inc: {views: 1}})

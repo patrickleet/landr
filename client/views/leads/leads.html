@@ -3,14 +3,18 @@
   <table class="table">
     <thead>
     <tr>
+      <th>Email</th>
       <th>Phone Number</th>
+      <th>Name</th>
       <th>Signed Up</th>
     </tr>
     </thead>
     <tbody>
     {{#each leads}}
     <tr>
+      <td>{{email}}</td>
       <td>{{phone}}</td>
+      <td>{{name}}</td>
       <td>{{created}}</td>
     </tr>
     {{/each}}

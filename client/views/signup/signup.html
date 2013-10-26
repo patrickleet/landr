@@ -5,7 +5,7 @@
       <h3>{{hasSignedUpLead}}</h3>
     </div>
   {{else}}
-    <div class="vert-text">
+    <div id="sign-up" class="vert-text">
       <h1>{{title}}</h1>
       <h3>{{lead}}</h3>
       <form role="form" class="col-lg-offset-4 col-lg-4">
@@ -26,21 +26,18 @@
 
 <template name="phoneInput">
   <div class="form-group">
-    <label for="phone">Enter your phone number</label>
-    <input type="tel" class="phone" class="form-control" id="phone" placeholder="Enter phone number">
+    <input type="tel" class="form-control phone" id="phone" placeholder="Enter your phone number">
   </div>
 </template>
 
 <template name="emailInput">
   <div class="form-group">
-    <label for="email">Enter your email</label>
-    <input type="text" class="email" class="form-control" id="email" placeholder="Enter email">
+    <input type="text" class="form-control email" id="email" placeholder="Enter you email address">
   </div>
 </template>
 
 <template name="nameInput">
   <div class="form-group">
-    <label for="name">Enter your name</label>
-    <input type="text" class="form-control" id="name" placeholder="Enter name">
+    <input type="text" class="form-control" id="name" placeholder="Enter you name">
   </div>
 </template>
