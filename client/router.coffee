@@ -16,7 +16,7 @@ Router.map ->
 
 
   @route 'lander',
-    path: 'lander/:_id'
+    path: ':_id'
     data: () ->
       return landers.findOne(this.params._id)
     load: () ->
@@ -26,7 +26,7 @@ Router.map ->
   @route 'dashboard'
 
   @route 'leads',
-    path: 'leads/:_id'
+    path: ':_id/leads'
     data: () ->
       lander = landers.findOne(this.params._id)
       leadsCursor = leads.find({landerId: this.params._id})
