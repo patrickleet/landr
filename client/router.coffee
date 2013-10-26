@@ -10,10 +10,8 @@ Router.map ->
     load: () ->
       Meteor.call('increaseLanderViews', 'main')
 
-
 #    before: () ->
-#      this.subscribe('landers', 'main').wait();
-
+#      this.subscribe('landers', 'main').wait()
 
   @route 'lander',
     path: ':_id'
@@ -21,7 +19,8 @@ Router.map ->
       return landers.findOne(this.params._id)
     load: () ->
       Meteor.call('increaseLanderViews', this.params._id)
-
+    after: () ->
+      document.title = this.data().title
 
   @route 'dashboard'
 
