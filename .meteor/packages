@@ -7,7 +7,6 @@ standard-app-packages
 insecure
 preserve-inputs
 bootstrap-3
-font-awesome
 iron-router
 less
 accounts-ui
@@ -15,3 +14,4 @@ accounts-password
 accounts-entry
 coffeescript
 autopublish
+font-awesome-4

@@ -3,6 +3,7 @@
     "bootstrap-3": {},
     "font-awesome": {},
     "iron-router": {},
-    "accounts-entry": {}
+    "accounts-entry": {},
+    "font-awesome-4": {}
   }
 }
