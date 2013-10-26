@@ -12,3 +12,10 @@ if @landers.find().count() is 0
     lead: 'Share a Cab. Make Connections. Save Money.'
     hasSignedUpLead: 'Thanks for signing up.'
     views: 0
+
+  @landers.insert
+    _id: 'firstfloorstudio'
+    title: "First Floor Studio"
+    lead: "Make some fucking music."
+    hasSignedUpLead: 'Thanks, cunt.'
+    views: 0
