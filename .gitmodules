@@ -1,3 +1,0 @@
-[submodule "packages/iron-router"]
-	path = packages/iron-router
-	url = git@github.com:patrickleet/iron-router.git
