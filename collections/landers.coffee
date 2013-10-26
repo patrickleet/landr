@@ -1,16 +1,25 @@
 class @Lander
-  constructor: (title, lead, hasSignedUpLead, views, services) ->
-    check(title, String)
-    check(lead, String)
-    check(hasSignedUpLead, String)
-    check(views, Number)
-    check(services, [Object])
+  constructor: (options) ->
+    check(options, Object)
+    defaults =
+      views: 0
+      collectEmail: true
+      collectName: false
+      collectPhone: false
+      hasSignedUpLead: 'Thanks for signing up.'
 
-    @title = title
-    @lead = lead
-    @hasSignedUpLead = hasSignedUpLead
-    @views = views
-    @services = services
+    options = _.defaults(options, defaults)
+    options = _.pick(options,
+      'title'
+      'lead'
+      'hasSignedUpLead'
+      'views'
+      'collectEmail'
+      'collectPhone'
+      'collectName'
+      'services'
+    )
+    _.extend(@, options)
 
 @Lander.compare = (a, b) ->
   if (a.order < b.order)
@@ -21,11 +30,5 @@ class @Lander
 
 @landers = new Meteor.Collection('landers', {
   transform: (doc) ->
-    title = doc.title
-    lead = doc.lead
-    hasSignedUpLead = doc.hasSignedUpLead
-    views = doc.views
-    services = doc.services ? []
-    services = services.sort(Lander.compare)
-    return new Lander(title, lead, hasSignedUpLead, views, services);
+    return new Lander(doc);
 })

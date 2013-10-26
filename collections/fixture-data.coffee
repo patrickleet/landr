@@ -6,6 +6,9 @@ Meteor.startup () ->
       lead: 'A landing page for the real world.'
       hasSignedUpLead: 'Thanks for signing up.'
       views: 0
+      collectEmail: true
+      collectPhone: false
+      collectName: true
       services: [
         {
           order: 1
@@ -43,6 +46,9 @@ Meteor.startup () ->
       lead: 'Share a Cab. Make Connections. Save Money.'
       hasSignedUpLead: 'Thanks for signing up.'
       views: 0
+      collectEmail: true
+      collectPhone: false
+      collectName: true
       services: [
         {
           order: 1
@@ -80,6 +86,9 @@ Meteor.startup () ->
       lead: "Make some fucking music."
       hasSignedUpLead: 'Thanks, cunt.'
       views: 0
+      collectEmail: true
+      collectPhone: false
+      collectName: true
       services: [
         {
           order: 1

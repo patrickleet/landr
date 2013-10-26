@@ -9,12 +9,38 @@
       <h1>{{title}}</h1>
       <h3>{{lead}}</h3>
       <form role="form" class="col-lg-offset-4 col-lg-4">
-        <div class="form-group">
-          <label for="phone">Enter your phone number</label>
-          <input type="tel" class="form-control" id="phone" placeholder="Enter phone number">
-        </div>
+        {{#if collectPhone}}
+          {{> phoneInput}}
+        {{/if}}
+        {{#if collectName}}
+          {{> nameInput}}
+        {{/if}}
+        {{#if collectEmail}}
+          {{> emailInput}}
+        {{/if}}
         <button type="submit" class="btn btn-default">Sign Up</button>
       </form>
     </div>
   {{/if}}
+</template>
+
+<template name="phoneInput">
+  <div class="form-group">
+    <label for="phone">Enter your phone number</label>
+    <input type="tel" class="phone" class="form-control" id="phone" placeholder="Enter phone number">
+  </div>
+</template>
+
+<template name="emailInput">
+  <div class="form-group">
+    <label for="email">Enter your email</label>
+    <input type="text" class="email" class="form-control" id="email" placeholder="Enter email">
+  </div>
+</template>
+
+<template name="nameInput">
+  <div class="form-group">
+    <label for="name">Enter your name</label>
+    <input type="text" class="form-control" id="name" placeholder="Enter name">
+  </div>
 </template>
