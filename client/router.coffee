@@ -13,6 +13,8 @@ Router.map ->
 
   @route 'lander',
     path: 'lander/:_id'
+    data: () ->
+      landers.findOne(this.params._id)
 
   @route 'dashboard',
 
