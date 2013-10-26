@@ -1,10 +1,36 @@
+@clearErrors = () ->
+  Errors.remove({seen: true})
+
+@checkAuthorized = () ->
+  routeName = this.context.route.name;
+  # no need to check at these URLs
+  if (_.include([
+    'passwordReset',
+    'notFound',
+    'loading'
+    'entrySignIn'
+    'entrySignUp'
+    'entryForgotPassword'
+    'entrySignOut'
+  ], routeName))
+    return;
+
+  user = Meteor.user();
+  if (! user)
+    @render (if Meteor.loggingIn() then @loadingTemplate else "entrySignIn")
+    return this.stop();
+
+
 Router.configure
   notFoundTemplate: '404'
+  before: [@clearErrors, @checkAuthorized]
+  layoutTemplate: 'landerLayout' # TODO: Override entry controllers
 
 Router.map ->
   @route 'home',
     path: '/'
-    template: 'lander'
+    template: 'landerMain'
+    layoutTemplate: 'landerLayout'
     data: () ->
       return landers.findOne('main')
     load: () ->
@@ -15,6 +41,8 @@ Router.map ->
 
   @route 'lander',
     path: ':_id'
+    template: 'landerMain'
+    layoutTemplate: 'landerLayout'
     data: () ->
       return landers.findOne(this.params._id)
     load: () ->
