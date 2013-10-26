@@ -3,7 +3,7 @@ Meteor.startup ->
     passwordSignupFields: 'EMAIL_ONLY'
 
   AccountsEntry.config
-    homeRoute: '/'
-    dashboardRoute: '/dashboard'
-    privacyUrl: '/privacy-policy'
-    termsUrl: '/terms-of-use'
+    homeRoute: Router.routes['home'].path()
+    dashboardRoute: Router.routes['dashboard'].path()
+    privacyUrl: Router.routes['privacyPolicy'].path()
+    termsUrl: Router.routes['termsOfUse'].path()
