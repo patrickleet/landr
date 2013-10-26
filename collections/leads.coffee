@@ -1,0 +1,1 @@
+@leads = new Meteor.Collection('leads')

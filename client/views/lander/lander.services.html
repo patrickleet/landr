@@ -3,40 +3,25 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4 col-md-offset-4 text-center">
-          <h2>Why CabPool?</h2>
+          <h2>Why {{title}}?</h2>
           <hr>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-2 col-md-offset-2 text-center">
-          <div class="service-item">
-            <i class="service-icon icon-group"></i>
-            <h4>Grow Your Network</h4>
-            <p>Connect with like-minded individuals going to the same events.</p>
-          </div>
-        </div>
-        <div class="col-md-2 text-center">
-          <div class="service-item">
-            <i class="service-icon icon-heart"></i>
-            <h4>Meet Someone Special</h4>
-            <p>And just maybe they'll think you're special, too. If not, it's only a cab ride.</p>
-          </div>
-        </div>
-        <div class="col-md-2 text-center">
-          <div class="service-item">
-            <i class="service-icon icon-comments"></i>
-            <h4>Make Friends</h4>
-            <p>Good conversation leads to lasting friendships.</p>
-          </div>
-        </div>
-        <div class="col-md-2 text-center">
-          <div class="service-item">
-            <i class="service-icon icon-building"></i>
-            <h4>Get Downtown</h4>
-            <p>Or just get downtown.</p>
-          </div>
-        </div>
+      <div class="row services-list">
+        {{#each services}}
+          {{> service}}
+        {{/each}}
       </div>
+    </div>
+  </div>
+</template>
+
+<template name="service">
+  <div class="service text-center">
+    <div class="service-item">
+      <i class="service-icon {{iconClass}}"></i>
+      <h4>{{name}}</h4>
+      <p>{{description}}</p>
     </div>
   </div>
 </template>

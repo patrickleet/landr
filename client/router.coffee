@@ -6,7 +6,7 @@ Router.map ->
     path: '/'
     template: 'lander'
     data: () ->
-      landers.findOne('main')
+      return landers.findOne('main')
     load: () ->
       Meteor.call('increaseLanderViews', 'main')
 
@@ -18,7 +18,7 @@ Router.map ->
   @route 'lander',
     path: 'lander/:_id'
     data: () ->
-      landers.findOne(this.params._id)
+      return landers.findOne(this.params._id)
     load: () ->
       Meteor.call('increaseLanderViews', this.params._id)
 
