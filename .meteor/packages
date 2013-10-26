@@ -15,5 +15,6 @@ coffeescript
 autopublish
 font-awesome-4
 ejson
-iron-router
 email
+iron-router
+iron-router-progress
