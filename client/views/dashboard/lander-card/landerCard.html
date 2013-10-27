@@ -1,0 +1,39 @@
+<template name="landerCard">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{title}}</h3>
+    </div>
+    <div class="panel-body">
+      <p class="lead">{{lead}}</p>
+      <div class="row">
+        {{> landerCardViews}}
+        {{#if collectEmail}}
+          {{> emailsCollected}}
+        {{/if}}
+
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="landerCardViews">
+  <div class="col-md-2 text-center">
+    <div class="service text-center">
+      <div class="service-item">
+        <i class="service-icon fa fa-eye"></i>
+        <h4>{{views}} Views</h4>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="emailsCollected">
+  <div class="col-md-2 text-center">
+    <div class="service text-center">
+      <div class="service-item">
+        <i class="service-icon fa fa-envelope-o"></i>
+        <h4>{{emailsCollected}} Emails</h4>
+      </div>
+    </div>
+  </div>
+</template>
