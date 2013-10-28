@@ -1,6 +1,20 @@
 <template name="dashboard">
-  <h1>Dashboard</h1>
-  {{#each landers}}
-    {{> landerCard}}
-  {{/each}}
+  <div id="dashboard">
+    <header class="row">
+      <h1>Dashboard</h1>
+    </header>
+    <div class="row add-lander">
+      <button class=" col-xs-12
+                      col-sm-12
+                      col-md-4
+                      col-lg-4
+                      btn btn-primary">Add a Lander</button>
+    </div>
+    <div class="row">
+      {{#each landers}}
+        {{> landerCard}}
+      {{/each}}
+    </div>
+  </div>
 </template>
+
