@@ -5,6 +5,8 @@ Template.signup.helpers(
 
 Template.signup.events(
   'submit form' : (evt, tmpl) ->
+    if tmpl.data.createAccount
+      return
     evt.preventDefault()
 
     options = {

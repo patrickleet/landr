@@ -28,10 +28,14 @@ Router.map ->
 #      this.subscribe('landers', 'main').wait()
 
   @route 'dashboard',
-    path: '/dashboard'
+    layoutTemplate: 'dashboardLayout'
+    yieldTemplates:
+      'dashboardNavbar': {to: 'navbar'}
     before: [checkAuthorized]
     data: () ->
-      landers.find()
+      return {
+        landers: landers.find()
+      }
 
   @route 'lander',
     path: ':_id'
@@ -47,13 +51,15 @@ Router.map ->
   @route 'leads',
     path: ':_id/leads'
     before: [checkAuthorized]
+    layoutTemplate: 'dashboardLayout'
+    yieldTemplates:
+      'dashboardNavbar': {to: 'navbar'}
     data: () ->
       lander = landers.findOne(this.params._id)
       leadsCursor = leads.find({landerId: this.params._id})
 
-      data =
+      return {
         leads: leadsCursor
         leadsCount: leadsCursor.count()
         viewCount: lander.views
-
-      return data
+      }
