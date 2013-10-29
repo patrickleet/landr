@@ -9,6 +9,7 @@ Router.configure
   layoutTemplate: 'landerLayout' # TODO: Override entry controllers
 
 Router.map ->
+
   @route 'termsOfUse',
     path: '/terms-of-use'
 
@@ -28,6 +29,7 @@ Router.map ->
 #      this.subscribe('landers', 'main').wait()
 
   @route 'dashboard',
+    path: '/dashboard'
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
@@ -37,16 +39,26 @@ Router.map ->
         landers: landers.find()
       }
 
-  @route 'lander',
-    path: ':_id'
-    template: 'landerMain'
-    layoutTemplate: 'landerLayout'
+  @route 'landerCreate',
+    path: '/create'
+    template: 'landerForm'
+    layoutTemplate: 'dashboardLayout'
+    yieldTemplates:
+      'dashboardNavbar': {to: 'navbar'}
     data: () ->
-      return landers.findOne(this.params._id)
-    load: () ->
-      Meteor.call('increaseLanderViews', this.params._id)
-    after: () ->
-      document.title = this.data().title
+      return {
+        create: true
+      }
+
+  @route 'landerEdit',
+    path: ':_id/edit'
+    template: 'landerForm'
+    layoutTemplate: 'dashboardLayout'
+    yieldTemplates:
+      'dashboardNavbar': {to: 'navbar'}
+    data: () ->
+      return landers.find(this.params._id)
+
 
   @route 'leads',
     path: ':_id/leads'
@@ -63,3 +75,14 @@ Router.map ->
         leadsCount: leadsCursor.count()
         viewCount: lander.views
       }
+
+  @route 'lander',
+    path: ':_id'
+    template: 'landerMain'
+    layoutTemplate: 'landerLayout'
+    data: () ->
+      return landers.findOne(this.params._id)
+    load: () ->
+      Meteor.call('increaseLanderViews', this.params._id)
+    after: () ->
+      document.title = this.data().title
