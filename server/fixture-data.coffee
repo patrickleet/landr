@@ -50,6 +50,9 @@ Meteor.startup () ->
       lead: 'Share a Cab. Make Connections. Save Money.'
       hasSignedUpLead: 'Thanks for signing up.'
       views: 0
+      emailsCollected: 0
+      phonesCollected: 0
+      numberOfLeads: 0
       collectEmail: true
       collectPhone: false
       collectName: true
@@ -90,6 +93,9 @@ Meteor.startup () ->
       lead: "Make some fucking music."
       hasSignedUpLead: 'Thanks, cunt.'
       views: 0
+      emailsCollected: 0
+      phonesCollected: 0
+      numberOfLeads: 0
       collectEmail: true
       collectPhone: false
       collectName: true
