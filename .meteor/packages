@@ -12,7 +12,6 @@ accounts-ui
 accounts-password
 accounts-entry
 coffeescript
-autopublish
 font-awesome-4
 ejson
 email

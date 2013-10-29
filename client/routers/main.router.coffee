@@ -20,6 +20,8 @@ Router.map ->
     path: '/'
     template: 'landerMain'
     layoutTemplate: 'landerLayout'
+    before: () ->
+      @subscribe('main-lander').wait()
     data: () ->
       return landers.findOne('main')
     load: () ->
@@ -33,7 +35,13 @@ Router.map ->
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
-    before: [checkAuthorized]
+    before: [
+      checkAuthorized
+
+      () ->
+        @subscribe('landers').wait()
+
+    ]
     data: () ->
       return {
         landers: landers.find()
@@ -56,6 +64,8 @@ Router.map ->
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
+    before: () ->
+      @subscribe('lander', this.params._id).wait()
     data: () ->
       return landers.find(this.params._id)
 
@@ -66,6 +76,8 @@ Router.map ->
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
+    before: () ->
+      @subscribe('leads', this.params._id)
     data: () ->
       lander = landers.findOne(this.params._id)
       leadsCursor = leads.find({landerId: this.params._id})
