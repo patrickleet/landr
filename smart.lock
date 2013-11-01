@@ -2,36 +2,31 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "bootstrap-3": {},
       "accounts-entry": {},
       "font-awesome-4": {},
-      "iron-router-progress": {}
+      "iron-router": {},
+      "bootstrap3-less": {}
     },
     "packages": {
-      "bootstrap-3": {
-        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v0.3.5",
-        "commit": "47996f67f3987c9f82117394effcbe1586a4fe29"
-      },
       "accounts-entry": {
         "git": "https://github.com/BeDifferential/accounts-entry.git",
-        "tag": "v0.4.0",
-        "commit": "0c2986e47d8f00f4e0c87eb1038d9b898744c3ea"
+        "tag": "v0.4.2",
+        "commit": "d846e901d7478240050471bcd5afff7de12b3683"
       },
       "font-awesome-4": {
         "git": "https://github.com/michaelbishop/meteor-font-awesome-4.git",
         "tag": "v4.0.0",
         "commit": "c28b5a0f2a2bd233c495642b40a167eda95172f5"
       },
-      "iron-router-progress": {
-        "git": "https://github.com/Multiply/iron-router-progress.git",
-        "tag": "v0.1.2",
-        "commit": "e6f382c90c0847542d0946f32f4f78008038a8b4"
-      },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "branch": "dev",
-        "commit": "d022acf3324935703d311c025f5e1ed39357600b"
+        "tag": "v0.6.1",
+        "commit": "4e1ee0581d68bff422a915dacb0bd30eae10fe08"
+      },
+      "bootstrap3-less": {
+        "git": "https://github.com/eprochasson/bootstrap3-less",
+        "tag": "v0.1.4",
+        "commit": "23ec918f8377b15b22cba33e13b717214235c88a"
       }
     }
   }

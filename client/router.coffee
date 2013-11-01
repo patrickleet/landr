@@ -47,16 +47,12 @@ Router.map ->
         landers: landers.find()
       }
 
-  @route 'landerCreate',
+  @route 'createLander',
     path: '/create'
-    template: 'landerForm'
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
-    data: () ->
-      return {
-        create: true
-      }
+
 
   @route 'landerEdit',
     path: ':_id/edit'
