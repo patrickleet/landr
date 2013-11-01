@@ -1,6 +1,7 @@
 // Core variables and mixins
 @import "/packages/bootstrap3-less/lib/less/variables.lessimport";
 @import "/packages/bootstrap3-less/lib/less/mixins.lessimport";
+@import "mixins.lessimport";
 
   // Reset
 @import "/packages/bootstrap3-less/lib/less/normalize.lessimport";
