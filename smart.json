@@ -1,8 +1,8 @@
 {
   "packages": {
-    "bootstrap-3": {},
     "accounts-entry": {},
     "font-awesome-4": {},
-    "iron-router-progress": {}
+    "iron-router": {},
+    "bootstrap3-less": {}
   }
 }

@@ -6,7 +6,6 @@
 standard-app-packages
 insecure
 preserve-inputs
-bootstrap-3
 less
 accounts-ui
 accounts-password
@@ -16,4 +15,4 @@ font-awesome-4
 ejson
 email
 iron-router
-iron-router-progress
+bootstrap3-less
