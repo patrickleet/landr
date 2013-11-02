@@ -9,6 +9,16 @@
 @landers = new Meteor.Collection('landers')
 
 Meteor.methods
+  createLander: (brand, url) ->
+    check(brand, String)
+    check(url, String)
+    lander =
+      brand: brand
+      url: url
+
+    lander
+
+
   increaseLanderViews: (landerId) ->
     check(landerId, String)
     landers.update(landerId, {$inc: {views: 1}})
