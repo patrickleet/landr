@@ -7,6 +7,36 @@ Router.configure
 
 
 @filters = {
+
+  nProgressHook: () ->
+    console.log('this ran')
+    if @ready()
+      NProgress.done()
+    else
+      NProgress.start()
+      @stop()
+
+  resetScroll: () ->
+    scrollTo = window.currentScroll || 0;
+    $('body').scrollTop(scrollTo);
+    $('body').css("min-height", 0);
+
+  isLoggedIn: () ->
+    if !(Meteor.loggingIn() || Meteor.user())
+#      throwError('Please Sign In First.')
+      this.render('entrySignIn')
+      this.stop()
+
+  isLoggedOut: () ->
+    if Meteor.user()
+      Router.go('dashboard')
+
+  isAdmin: () ->
+    if !Meteor.loggingIn() && Session.get('settingsLoaded') && !isAdmin()
+  #  throwError("Sorry, you  have to be an admin to view this page.")
+      this.render('no_rights');
+      this.stop();
+
   checkAuthorized: () ->
     user = Meteor.user();
     if (! user)
@@ -14,6 +44,35 @@ Router.configure
       return this.stop();
 
 }
+
+# Load Hooks
+Router.load () ->
+#  clearSeenErrors(); # set all errors who have already been seen to not show anymore
+  @
+
+
+# Show loading bar for any route that loads a subscription
+Router.before(filters.nProgressHook, {only: [
+  'home'
+  'dashboard'
+  'editLander'
+  'leads'
+  'lander'
+]})
+
+# Check logged in for these routes
+Router.before(filters.isLoggedIn, {only: [
+  'dashboard'
+  'createLander'
+  'editLander'
+]})
+
+# if already logged in, don't show login stuff, just redirect to dashboard
+Router.before(filters.isLoggedOut, {only: [
+  'entrySignIn'
+  'entrySignUp'
+  'home'
+]})
 
 Router.map ->
 
@@ -33,7 +92,6 @@ Router.map ->
       return landers.findOne('main')
     load: () ->
       if (Meteor.userId())
-        Router.go('dashboard')
         return
       Meteor.call('increaseLanderViews', 'main')
 
@@ -45,13 +103,8 @@ Router.map ->
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
-    before: [
-      filters.checkAuthorized
-
-      () ->
-        @subscribe('landers').wait()
-
-    ]
+    before: () ->
+      @subscribe('landers').wait()
     data: () ->
       return {
         landers: landers.find()
@@ -64,7 +117,7 @@ Router.map ->
       'dashboardNavbar': {to: 'navbar'}
 
 
-  @route 'landerEdit',
+  @route 'editLander',
     path: ':_id/edit'
     template: 'landerForm'
     layoutTemplate: 'dashboardLayout'
@@ -78,7 +131,6 @@ Router.map ->
 
   @route 'leads',
     path: ':_id/leads'
-    before: [filters.checkAuthorized]
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
