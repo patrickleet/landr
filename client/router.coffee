@@ -6,7 +6,9 @@
 
 Router.configure
   notFoundTemplate: '404'
-  layoutTemplate: 'landerLayout' # TODO: Override entry controllers
+  layoutTemplate: 'dashboardLayout' # TODO: Override entry controllers
+  yieldTemplates:
+    'dashboardNavbar': {to: 'navbar'}
 
 Router.map ->
 
@@ -25,6 +27,9 @@ Router.map ->
     data: () ->
       return landers.findOne('main')
     load: () ->
+      if (Meteor.userId())
+        Router.go('dashboard')
+        return
       Meteor.call('increaseLanderViews', 'main')
 
 #    before: () ->
