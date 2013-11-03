@@ -9,15 +9,37 @@
 @landers = new Meteor.Collection('landers')
 
 Meteor.methods
-  createLander: (brand, url) ->
-    check(brand, String)
-    check(url, String)
+  createLander: (options) ->
+    check(options, {
+      brand: String
+      url: String
+    })
+
     lander =
-      brand: brand
-      url: url
+      owner: this.userId
+      brand: options.brand
+      url: options.url
+      views: 0
+      emailsCollected: 0
+      phonesCollected: 0
+      numberOfLeads: 0
+      collectName: true
+      collectEmail: true
+      collectPhone: false
+      intro:
+        title: 'High level view of problem.'
+        lead: 'Enter a description about why this is a problem and how your idea will solve this problem. Maybe end with something witty.'
+      services: [
+        {
+          order: 1
+          name: 'Example service'
+          description: 'A description about this service and why it\'s super awesome.'
+          iconClass: 'fa fa-briefcase'
+        }
+      ]
 
-    lander
 
+    return landers.insert lander
 
   increaseLanderViews: (landerId) ->
     check(landerId, String)

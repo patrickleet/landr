@@ -85,11 +85,11 @@ Router.map ->
       }
 
   @route 'lander',
-    path: ':_id'
+    path: ':url'
     template: 'landerMain'
     layoutTemplate: 'landerLayout'
     data: () ->
-      return landers.findOne(this.params._id)
+      return landers.findOne({url: this.params.url})
     load: () ->
       Meteor.call('increaseLanderViews', this.params._id)
     after: () ->
