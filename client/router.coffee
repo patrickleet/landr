@@ -5,7 +5,8 @@
     return this.stop();
 
 Router.configure
-  notFoundTemplate: '404'
+  notFoundTemplate: 'notFound'
+  loadingTemplate: 'loading'
   layoutTemplate: 'dashboardLayout' # TODO: Override entry controllers
   yieldTemplates:
     'dashboardNavbar': {to: 'navbar'}
