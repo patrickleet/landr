@@ -1,6 +1,8 @@
 Template.createLander.events({
   'keyup input[name=brand]': (evt, tmpl) ->
     brand = $(evt.target).val()
+    if (brand)
+      brand = brand.toLowerCase().dasherize()
     $(evt.target).closest('form').find('[name=url]').val(brand)
 
   'submit form': (evt, tmpl) ->

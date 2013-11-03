@@ -5,7 +5,8 @@
       "accounts-entry": {},
       "font-awesome-4": {},
       "iron-router": {},
-      "bootstrap3-less": {}
+      "bootstrap3-less": {},
+      "sugarjs": {}
     },
     "packages": {
       "accounts-entry": {
@@ -27,6 +28,11 @@
         "git": "https://github.com/eprochasson/bootstrap3-less",
         "tag": "v0.1.4",
         "commit": "23ec918f8377b15b22cba33e13b717214235c88a"
+      },
+      "sugarjs": {
+        "git": "https://github.com/crapthings/meteor-sugarjs.git",
+        "tag": "v1.4.0.1",
+        "commit": "2841738b2c28d2d97c6cf3c41c4558f59f93db0e"
       }
     }
   }
