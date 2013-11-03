@@ -74,6 +74,17 @@ Router.before(filters.isLoggedOut, {only: [
   'home'
 ]})
 
+
+# After Hooks
+# Example of exceptions might be when applying a filter through a url or other
+# cases that a new main template isn't rendered
+Router.after(filters.resetScroll, {except: []})
+
+# Analytics Hook
+Router.after () ->
+#  analyticsRequest()
+  @
+
 Router.map ->
 
   @route 'termsOfUse',
@@ -117,16 +128,7 @@ Router.map ->
       'dashboardNavbar': {to: 'navbar'}
 
 
-  @route 'editLander',
-    path: ':_id/edit'
-    template: 'landerForm'
-    layoutTemplate: 'dashboardLayout'
-    yieldTemplates:
-      'dashboardNavbar': {to: 'navbar'}
-    before: () ->
-      @subscribe('lander', this.params._id).wait()
-    data: () ->
-      return landers.find(this.params._id)
+
 
 
   @route 'leads',
@@ -145,6 +147,17 @@ Router.map ->
         leadsCount: leadsCursor.count()
         viewCount: lander.views
       }
+
+  @route 'editLander',
+    path: ':url/edit'
+    template: 'landerForm'
+    layoutTemplate: 'dashboardLayout'
+    yieldTemplates:
+      'dashboardNavbar': {to: 'navbar'}
+    before: () ->
+      @subscribe('lander', this.params._id).wait()
+    data: () ->
+      return landers.find(this.params._id)
 
   @route 'lander',
     path: ':url'
