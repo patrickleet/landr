@@ -1,15 +1,19 @@
-@checkAuthorized = () ->
-  user = Meteor.user();
-  if (! user)
-    @render (if Meteor.loggingIn() then @loadingTemplate else "entrySignIn")
-    return this.stop();
-
 Router.configure
-  notFoundTemplate: 'notFound'
-  loadingTemplate: 'loading'
   layoutTemplate: 'dashboardLayout' # TODO: Override entry controllers
+  loadingTemplate: 'loading'
+  notFoundTemplate: 'notFound'
   yieldTemplates:
     'dashboardNavbar': {to: 'navbar'}
+
+
+@filters = {
+  checkAuthorized: () ->
+    user = Meteor.user();
+    if (! user)
+      @render (if Meteor.loggingIn() then @loadingTemplate else "entrySignIn")
+      return this.stop();
+
+}
 
 Router.map ->
 
@@ -42,7 +46,7 @@ Router.map ->
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
     before: [
-      checkAuthorized
+      filters.checkAuthorized
 
       () ->
         @subscribe('landers').wait()
@@ -74,7 +78,7 @@ Router.map ->
 
   @route 'leads',
     path: ':_id/leads'
-    before: [checkAuthorized]
+    before: [filters.checkAuthorized]
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
