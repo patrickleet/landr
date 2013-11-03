@@ -1,15 +1,89 @@
-@checkAuthorized = () ->
-  user = Meteor.user();
-  if (! user)
-    @render (if Meteor.loggingIn() then @loadingTemplate else "entrySignIn")
-    return this.stop();
-
 Router.configure
-  notFoundTemplate: 'notFound'
-  loadingTemplate: 'loading'
   layoutTemplate: 'dashboardLayout' # TODO: Override entry controllers
+  loadingTemplate: 'loading'
+  notFoundTemplate: 'notFound'
   yieldTemplates:
     'dashboardNavbar': {to: 'navbar'}
+
+
+@filters = {
+
+  nProgressHook: () ->
+    console.log('this ran')
+    if @ready()
+      NProgress.done()
+    else
+      NProgress.start()
+      @stop()
+
+  resetScroll: () ->
+    scrollTo = window.currentScroll || 0;
+    $('body').scrollTop(scrollTo);
+    $('body').css("min-height", 0);
+
+  isLoggedIn: () ->
+    if !(Meteor.loggingIn() || Meteor.user())
+#      throwError('Please Sign In First.')
+      this.render('entrySignIn')
+      this.stop()
+
+  isLoggedOut: () ->
+    if Meteor.user()
+      Router.go('dashboard')
+
+  isAdmin: () ->
+    if !Meteor.loggingIn() && Session.get('settingsLoaded') && !isAdmin()
+  #  throwError("Sorry, you  have to be an admin to view this page.")
+      this.render('no_rights');
+      this.stop();
+
+  checkAuthorized: () ->
+    user = Meteor.user();
+    if (! user)
+      @render (if Meteor.loggingIn() then @loadingTemplate else "entrySignIn")
+      return this.stop();
+
+}
+
+# Load Hooks
+Router.load () ->
+#  clearSeenErrors(); # set all errors who have already been seen to not show anymore
+  @
+
+
+# Show loading bar for any route that loads a subscription
+Router.before(filters.nProgressHook, {only: [
+  'home'
+  'dashboard'
+  'editLander'
+  'leads'
+  'lander'
+]})
+
+# Check logged in for these routes
+Router.before(filters.isLoggedIn, {only: [
+  'dashboard'
+  'createLander'
+  'editLander'
+]})
+
+# if already logged in, don't show login stuff, just redirect to dashboard
+Router.before(filters.isLoggedOut, {only: [
+  'entrySignIn'
+  'entrySignUp'
+  'home'
+]})
+
+
+# After Hooks
+# Example of exceptions might be when applying a filter through a url or other
+# cases that a new main template isn't rendered
+Router.after(filters.resetScroll, {except: []})
+
+# Analytics Hook
+Router.after () ->
+#  analyticsRequest()
+  @
 
 Router.map ->
 
@@ -29,7 +103,6 @@ Router.map ->
       return landers.findOne('main')
     load: () ->
       if (Meteor.userId())
-        Router.go('dashboard')
         return
       Meteor.call('increaseLanderViews', 'main')
 
@@ -41,13 +114,8 @@ Router.map ->
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
-    before: [
-      checkAuthorized
-
-      () ->
-        @subscribe('landers').wait()
-
-    ]
+    before: () ->
+      @subscribe('landers').wait()
     data: () ->
       return {
         landers: landers.find()
@@ -60,21 +128,11 @@ Router.map ->
       'dashboardNavbar': {to: 'navbar'}
 
 
-  @route 'landerEdit',
-    path: ':_id/edit'
-    template: 'landerForm'
-    layoutTemplate: 'dashboardLayout'
-    yieldTemplates:
-      'dashboardNavbar': {to: 'navbar'}
-    before: () ->
-      @subscribe('lander', this.params._id).wait()
-    data: () ->
-      return landers.find(this.params._id)
+
 
 
   @route 'leads',
     path: ':_id/leads'
-    before: [checkAuthorized]
     layoutTemplate: 'dashboardLayout'
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
@@ -89,6 +147,17 @@ Router.map ->
         leadsCount: leadsCursor.count()
         viewCount: lander.views
       }
+
+  @route 'editLander',
+    path: ':url/edit'
+    template: 'landerForm'
+    layoutTemplate: 'dashboardLayout'
+    yieldTemplates:
+      'dashboardNavbar': {to: 'navbar'}
+    before: () ->
+      @subscribe('lander', this.params._id).wait()
+    data: () ->
+      return landers.find(this.params._id)
 
   @route 'lander',
     path: ':url'

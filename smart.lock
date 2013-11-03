@@ -6,7 +6,8 @@
       "font-awesome-4": {},
       "iron-router": {},
       "bootstrap3-less": {},
-      "sugarjs": {}
+      "sugarjs": {},
+      "nprogress": {}
     },
     "packages": {
       "accounts-entry": {
@@ -33,6 +34,11 @@
         "git": "https://github.com/crapthings/meteor-sugarjs.git",
         "tag": "v1.4.0.1",
         "commit": "2841738b2c28d2d97c6cf3c41c4558f59f93db0e"
+      },
+      "nprogress": {
+        "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",
+        "tag": "v0.0.3",
+        "commit": "ffd1c5dd400af64121197f4e637a215c4b6b1fc7"
       }
     }
   }
