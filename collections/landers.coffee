@@ -38,8 +38,8 @@ Meteor.methods
         }
       ]
 
-
-    return landers.insert lander
+    landerId = landers.insert lander
+    return lander.url
 
   increaseLanderViews: (landerId) ->
     check(landerId, String)

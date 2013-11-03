@@ -1,4 +1,8 @@
 Template.createLander.events({
+  'keyup input[name=brand]': (evt, tmpl) ->
+    brand = $(evt.target).val()
+    $(evt.target).closest('form').find('[name=url]').val(brand)
+
   'submit form': (evt, tmpl) ->
     evt.preventDefault()
 
@@ -6,9 +10,9 @@ Template.createLander.events({
       brand: $(evt.target).find('[name=brand]').val()
       url: $(evt.target).find('[name=url]').val()
 
-    Meteor.call 'createLander', createLanderOptions, (error, id) ->
+    Meteor.call 'createLander', createLanderOptions, (error, url) ->
       if (error)
         return alert(error.reason)
 
-      Router.go('lander', {_id: id})
+      Router.go('lander', {url: url})
 })

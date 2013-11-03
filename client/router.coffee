@@ -73,7 +73,7 @@ Router.map ->
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
     before: () ->
-      @subscribe('leads', this.params._id)
+      @subscribe('leads', this.params._id).wait()
     data: () ->
       lander = landers.findOne(this.params._id)
       leadsCursor = leads.find({landerId: this.params._id})
@@ -88,6 +88,8 @@ Router.map ->
     path: ':url'
     template: 'landerMain'
     layoutTemplate: 'landerLayout'
+    before: () ->
+      @subscribe('lander-by-url', this.params.url).wait()
     data: () ->
       return landers.findOne({url: this.params.url})
     load: () ->
