@@ -10,6 +10,7 @@ Meteor.publish 'lander', (id) ->
 
 Meteor.publish 'lander-by-url', (url) ->
   check(url, String)
+  url = url.toLowerCase().dasherize()
   return landers.find({url: url})
 
 Meteor.publish 'leads', (landerId) ->

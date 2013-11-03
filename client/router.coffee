@@ -89,10 +89,12 @@ Router.map ->
     template: 'landerMain'
     layoutTemplate: 'landerLayout'
     before: () ->
-      @subscribe('lander-by-url', this.params.url).wait()
+      url = this.params.url.toLowerCase().dasherize()
+      @subscribe('lander-by-url', url).wait()
     data: () ->
-      return landers.findOne({url: this.params.url})
+      url = this.params.url.toLowerCase().dasherize()
+      return landers.findOne({url: url})
     load: () ->
       Meteor.call('increaseLanderViews', this.params._id)
     after: () ->
-      document.title = this.data().title
+      document.title = this.data().brand
