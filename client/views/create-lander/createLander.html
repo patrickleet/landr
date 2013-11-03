@@ -1,3 +1,16 @@
 <template name="createLander">
-  <h1>Create Lander</h1>
+  <form role="form">
+    <div class="form-group">
+      <label for="brand">Brand Name</label>
+      <input type="text" class="form-control" name="brand" id="brand" placeholder="Enter brand/idea name">
+    </div>
+    <div class="form-group">
+      <label for="url">Unique URL</label>
+      <div class="input-group">
+        <span class="input-group-addon">http://landr.io/</span>
+        <input type="text" class="form-control" name="url" id="url" placeholder="Your unique URL">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
 </template>

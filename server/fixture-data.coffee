@@ -10,9 +10,8 @@ Meteor.startup () ->
     @landers.insert
       _id: 'main'
       owner: userId
-      name: 'Landr'
+      brand: 'Landr'
       url: 'landr'
-      title: 'Landr'
       lead: 'A landing page for the real world.'
       hasSignedUpLead: 'Thanks for signing up.'
       views: 0
@@ -23,6 +22,10 @@ Meteor.startup () ->
       collectEmail: true
       collectPhone: true
       collectName: true
+      intro: {
+        title: "Stop being a wantraprenuer and be an entreprenuer"
+        lead: "Validate your ideas with real people. Get real data to know whether or not to pivot."
+      }
       services: [
         {
           order: 1
