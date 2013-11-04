@@ -1,16 +1,22 @@
 <template name="landerLayout">
-  <div id="top" class="header">
-    <div class="vert-text">
+    <div class="section">
       <h1>{{brand}}</h1>
       <h3>{{lead}}</h3>
+
+      {{yield}}
     </div>
-    {{yield}}
-  </div>
 
-  {{#with intro}}
-    {{> landerIntro}}
-  {{/with}}
-  {{> landerServices}}
+    <div class="section">
+      {{#with intro}}
+        {{> landerIntro}}
+      {{/with}}
+    </div>
 
-  {{> landerFooter}}
+    <div class="section">
+      {{> landerServices}}
+    </div>
+
+    <div class="section">
+      {{> landerFooter}}
+    </div>
 </template>

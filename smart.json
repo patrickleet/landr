@@ -5,6 +5,7 @@
     "iron-router": {},
     "bootstrap3-less": {},
     "sugarjs": {},
-    "nprogress": {}
+    "nprogress": {},
+    "jqueryui": {}
   }
 }

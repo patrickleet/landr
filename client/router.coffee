@@ -101,6 +101,7 @@ Router.map ->
       @subscribe('main-lander').wait()
     data: () ->
       return landers.findOne('main')
+    reactive: false
     load: () ->
       if (Meteor.userId())
         return
