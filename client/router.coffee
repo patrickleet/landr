@@ -16,6 +16,11 @@ Router.configure
       NProgress.start()
       @stop()
 
+  removeLanderCrap: () ->
+    $('body').attr('style', '')
+    $('#superContainer').find('.section:first').unwrap()
+    $('#fullPage-nav').remove()
+
   resetScroll: () ->
     scrollTo = window.currentScroll || 0;
     $('body').scrollTop(scrollTo);
@@ -97,6 +102,7 @@ Router.map ->
     path: '/'
     template: 'landerMain'
     layoutTemplate: 'landerLayout'
+    reactive: false
     before: () ->
       @subscribe('main-lander').wait()
     data: () ->
@@ -106,6 +112,8 @@ Router.map ->
       if (Meteor.userId())
         return
       Meteor.call('increaseLanderViews', 'main')
+    unload: () ->
+      filters.removeLanderCrap()
 
 #    before: () ->
 #      this.subscribe('landers', 'main').wait()
@@ -164,6 +172,7 @@ Router.map ->
     path: ':url'
     template: 'landerMain'
     layoutTemplate: 'landerLayout'
+    reactive: false
     before: () ->
       url = this.params.url.toLowerCase().dasherize()
       @subscribe('lander-by-url', url).wait()
@@ -171,6 +180,8 @@ Router.map ->
       url = this.params.url.toLowerCase().dasherize()
       return landers.findOne({url: url})
     load: () ->
-      Meteor.call('increaseLanderViews', this.params._id)
+      Meteor.call('increaseLanderViews', this.params.url)
     after: () ->
       document.title = this.data().brand
+    unload: () ->
+      filters.removeLanderCrap()
