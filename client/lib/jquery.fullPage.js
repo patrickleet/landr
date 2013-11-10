@@ -73,6 +73,11 @@
       $(document).off('mousewheel DOMMouseScroll', $.fn.fullpage.MouseWheelHandler);
       $(window).off('hashchange', $.fn.fullpage.onhashchange);
       $(document).off('keydown', $.fn.fullpage.onkeydown);
+      $(document).off('click', '#fullPage-nav a', $.fn.fullpage.onClickNav);
+      $('.section').off('click', '.controlArrow', $.fn.fullpage.onControlArrowClick);
+      $('.section').off('click', '.toSlide', $.fn.fullpage.onToSlideClick);
+      $(window).off('resize', $.fn.fullpage.onNonTabletResize);
+      $(window).off('orientationchange', $.fn.fullpage.onOrientationChange);
     }
 
 		//flag to avoid very fast sliding for landscape sliders
@@ -328,7 +333,6 @@
 		 */
 
     $.fn.fullpage.MouseWheelHandler = function(e) {
-
       if(options.autoScrolling){
         // cross-browser wheel delta
         e = window.event || e;
@@ -366,10 +370,8 @@
             }
           }
         }
-
         return false;
       }
-
 		}
 
     $(document).on('mousewheel DOMMouseScroll', $.fn.fullpage.MouseWheelHandler);
@@ -556,7 +558,6 @@
 		 */
     $.fn.fullpage.onkeydown = function(e) {
       //Moving the mian page with the keyboard arrows
-      console.log('keydown');
       if (!isMoving) {
         switch (e.which) {
           //up
@@ -588,71 +589,79 @@
     }
 
 		$(document).on('keydown', $.fn.fullpage.onkeydown);
+
+    $.fn.fullpage.onClickNav = function(e){
+      e.preventDefault();
+      var index = $(this).parent().index();
+      scrollPage($('.section').eq(index));
+      return false;
+    }
 		
-		$(document).on('click', '#fullPage-nav a', function(e){
-			e.preventDefault();
-			var index = $(this).parent().index();
-			scrollPage($('.section').eq(index));
-		});
+		$(document).on('click', '#fullPage-nav a', $.fn.fullpage.onClickNav);
 
 		/**
 		 * Scrolling horizontally when clicking on the slider controls.
 		 */
-		$('.section').on('click', '.controlArrow', function() {
-			//not that fast my friend! :)
-			if (!slideLapse) {
-				return;
-			}
-			slideLapse = false;
 
-			var slides = $(this).closest('.section').find('.slides');
-			var currentSlide = slides.find('.slide.active');
-			var destiny = null;
+    $.fn.fullpage.onControlArrowClick = function() {
+      //not that fast my friend! :)
+      if (!slideLapse) {
+        return;
+      }
+      slideLapse = false;
 
-			currentSlide.removeClass('active');
+      var slides = $(this).closest('.section').find('.slides');
+      var currentSlide = slides.find('.slide.active');
+      var destiny = null;
 
-			if ($(this).hasClass('prev')) {
-				destiny = currentSlide.prev('.slide');
-			} else {
-				destiny = currentSlide.next('.slide');
-			}
+      currentSlide.removeClass('active');
 
-			//is there isn't a next slide in the secuence?
-			if(!destiny.length) {
-				//to the last
-				if ($(this).hasClass('prev')) {
-					destiny = currentSlide.siblings(':last');
-				} else {
-					destiny = currentSlide.siblings(':first');
-				}	
-			}
-						
-			landscapeScroll(slides, destiny);
-			
-			destiny.addClass('active');
-		});
+      if ($(this).hasClass('prev')) {
+        destiny = currentSlide.prev('.slide');
+      } else {
+        destiny = currentSlide.next('.slide');
+      }
+
+      //is there isn't a next slide in the secuence?
+      if(!destiny.length) {
+        //to the last
+        if ($(this).hasClass('prev')) {
+          destiny = currentSlide.siblings(':last');
+        } else {
+          destiny = currentSlide.siblings(':first');
+        }
+      }
+
+      landscapeScroll(slides, destiny);
+
+      destiny.addClass('active');
+    }
+
+		$('.section').on('click', '.controlArrow', $.fn.fullpage.onControlArrowClick);
 
 		
 		/**
 		 * Scrolling horizontally when clicking on the slider controls.
 		 */
-		$('.section').on('click', '.toSlide', function(e) {
-			e.preventDefault();
-			
-			var slides = $(this).closest('.section').find('.slides');
-			var currentSlide = slides.find('.slide.active');
-			var destiny = null;
-			
-			destiny = slides.find('.slide').eq( ($(this).data('index') -1) );
+    $.fn.fullpage.onToSlideClick = function(e) {
+      e.preventDefault();
 
-			if(destiny.length > 0){
-				currentSlide.removeClass('active');
+      var slides = $(this).closest('.section').find('.slides');
+      var currentSlide = slides.find('.slide.active');
+      var destiny = null;
 
-				landscapeScroll(slides, destiny);
-				
-				destiny.addClass('active');
-			}
-		});
+      destiny = slides.find('.slide').eq( ($(this).data('index') -1) );
+
+      if(destiny.length > 0){
+        currentSlide.removeClass('active');
+
+        landscapeScroll(slides, destiny);
+
+        destiny.addClass('active');
+      }
+    }
+
+		$('.section').on('click', '.toSlide', $.fn.fullpage.onToSlideClick);
 		
 		/**
 		* Scrolls horizontal sliders.
@@ -707,23 +716,28 @@
 				});
 			}
 		}
-		
-		
+
+    $.fn.fullpage.onNonTabletResize = function() {
+      //in order to call the functions only when the resize is finished
+      //http://stackoverflow.com/questions/4298612/jquery-how-to-call-resize-event-only-once-its-finished-resizing
+      clearTimeout(resizeId);
+      resizeId = setTimeout(doneResizing, 500);
+    }
+
 		if (!isTablet) {
 			var resizeId;
 
 			//when resizing the site, we adjust the heights of the sections
-			$(window).resize(function() {
-				//in order to call the functions only when the resize is finished
-				//http://stackoverflow.com/questions/4298612/jquery-how-to-call-resize-event-only-once-its-finished-resizing
-				clearTimeout(resizeId);
-				resizeId = setTimeout(doneResizing, 500);
-			});
+			$(window).on('resize', $.fn.fullpage.onNonTabletResize);
 		
 		}
-		$(window).bind('orientationchange', function() {
-			doneResizing();
-		});
+
+
+    $.fn.fullpage.onOrientationChange = function() {
+      doneResizing();
+    }
+
+		$(window).on('orientationchange', $.fn.fullpage.onOrientationChange);
 
 		/**
 		 * When resizing is finished, we adjust the slides sizes and positions
