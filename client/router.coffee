@@ -17,9 +17,7 @@ Router.configure
       @stop()
 
   removeLanderCrap: () ->
-    $('body').attr('style', '')
-    $('#superContainer').find('.section:first').unwrap()
-    $('#fullPage-nav').remove()
+    $.fn.fullpage.destroy()
 
   resetScroll: () ->
     scrollTo = window.currentScroll || 0;

@@ -59,8 +59,22 @@
 				$('#superContainer').css('top', '0px');
 			}
 		};
-		
-			
+
+    $.fn.fullpage.destroy = function() {
+      // Clean up DOM
+      $('html, body').attr('style', '');
+      $('#superContainer').find('.section:first').unwrap();
+      $('#fullPage-nav').remove();
+
+      // Clean up events
+      $(window).off('scroll', $.fn.fullpage.onScroll);
+      $(document).off('touchmove', $.fn.fullpage.ontouchmove);
+      $(document).off('touchstart', $.fn.fullpage.ontouchstart);
+      $(document).off('mousewheel DOMMouseScroll', $.fn.fullpage.MouseWheelHandler);
+      $(window).off('hashchange', $.fn.fullpage.onhashchange);
+      $(document).off('keydown', $.fn.fullpage.onkeydown);
+    }
+
 		//flag to avoid very fast sliding for landscape sliders
 		var slideLapse = true;
 
@@ -169,84 +183,77 @@
 			}
 
 			if(options.scrollOverflow){
-				//after DOM and images are loaded 
-				$(window).on('load', function() {
-					$('.section').each(function(){
-						var slides = $(this).find('.slide');
-						
-						if(slides.length){
-							slides.each(function(){
-								createSlimScrolling($(this));
-							});
-						}else{
-							createSlimScrolling($(this));
-						}
-						
-					});
-				});
+				//after DOM and images are loaded
+        $('.section').each(function(){
+          var slides = $(this).find('.slide');
+
+          if(slides.length){
+            slides.each(function(){
+              createSlimScrolling($(this));
+            });
+          }else{
+            createSlimScrolling($(this));
+          }
+        });
 			}
-	
-			$(window).on('load', function() {
-				scrollToAnchor();	
-			});
-			
+		  scrollToAnchor();
 		});
 	
 		var scrollId;
 		var isScrolling = false;
-		
+
+    $.fn.fullpage.onScroll = function(e){
+
+      if(!options.autoScrolling){
+        var currentScroll = $(window).scrollTop();
+
+        var scrolledSections = $('.section').map(function(){
+          if ($(this).offset().top < (currentScroll + 100)){
+            return $(this);
+          }
+        });
+
+        //geting the last one, the current one on the screen
+        var currentSection = scrolledSections[scrolledSections.length-1];
+
+        //executing only once the first time we reach the section
+        if(!currentSection.hasClass('active')){
+          isScrolling = true;
+
+          var yMovement = getYmovement(currentSection);
+
+          $('.section.active').removeClass('active');
+          currentSection.addClass('active');
+
+          var anchorLink  = currentSection.data('anchor');
+          $.isFunction( options.onLeave ) && options.onLeave.call( this, currentSection.index('.section'), yMovement);
+
+          $.isFunction( options.afterLoad ) && options.afterLoad.call( this, anchorLink, (currentSection.index('.section') + 1));
+
+          activateMenuElement(anchorLink);
+          activateNavDots(anchorLink, 0);
+
+
+          if(options.anchors.length && !isMoving){
+            //needed to enter in hashChange event when using the menu with anchor links
+            lastScrolledDestiny = anchorLink;
+
+            location.hash = anchorLink;
+          }
+
+          //small timeout in order to avoid entering in hashChange event when scrolling is not finished yet
+          clearTimeout(scrollId);
+          scrollId = setTimeout(function(){
+            isScrolling = false;
+          }, 100);
+        }
+
+      }
+    }
+
 		//when scrolling...
-		$(window).scroll(function(e){
+		$(window).on('scroll', $.fn.fullpage.onScroll);
 
-			if(!options.autoScrolling){					
-				var currentScroll = $(window).scrollTop();
-				
-				var scrolledSections = $('.section').map(function(){
-					if ($(this).offset().top < (currentScroll + 100)){
-						return $(this);
-					}
-				});
-				
-				//geting the last one, the current one on the screen
-				var currentSection = scrolledSections[scrolledSections.length-1];
-				
-				//executing only once the first time we reach the section
-				if(!currentSection.hasClass('active')){
-					isScrolling = true;	
-					
-					var yMovement = getYmovement(currentSection);
-					
-					$('.section.active').removeClass('active');
-					currentSection.addClass('active');
-				
-					var anchorLink  = currentSection.data('anchor');
-					$.isFunction( options.onLeave ) && options.onLeave.call( this, currentSection.index('.section'), yMovement);
-
-					$.isFunction( options.afterLoad ) && options.afterLoad.call( this, anchorLink, (currentSection.index('.section') + 1));
-					
-					activateMenuElement(anchorLink);	
-					activateNavDots(anchorLink, 0);
-					
-				
-					if(options.anchors.length && !isMoving){
-						//needed to enter in hashChange event when using the menu with anchor links
-						lastScrolledDestiny = anchorLink;
-			
-						location.hash = anchorLink;
-					}
-					
-					//small timeout in order to avoid entering in hashChange event when scrolling is not finished yet
-					clearTimeout(scrollId);
-					scrollId = setTimeout(function(){					
-						isScrolling = false;
-					}, 100);
-				}
-				
-			}					
-		});	
-	
-
-		
 	
 		var touchStartY = 0;
 		var touchEndY = 0;
@@ -258,54 +265,58 @@
 		* This way, the touchstart and the touch moves shows an small difference between them which is the
 		* used one to determine the direction.
 		*/
-		$(document).on('touchmove', function(event){
-			if(options.autoScrolling && isTablet){
-				//preventing the easing on iOS devices
-				event.preventDefault();
-				var e = event.originalEvent;
+    $.fn.fullpage.ontouchmove = function(event){
+      if(options.autoScrolling && isTablet){
+        //preventing the easing on iOS devices
+        event.preventDefault();
+        var e = event.originalEvent;
 
-				if (!isMoving) { //if theres any #
-					var scrollable = $('.section.active').find('.scrollable');
-				
-					touchEndY = e.touches[0].pageY;
-					touchEndX = e.touches[0].pageX;
-					if(touchStartY > touchEndY){
-						if(scrollable.length > 0 ){
-							//is the scrollbar at the end of the scroll?
-							if(isScrolled('bottom', scrollable)){
-								$.fn.fullpage.moveSlideDown();
-							}else{
-								return true;
-							}
-						}else{
-							// moved down
-							$.fn.fullpage.moveSlideDown();
-						}
-					} else {
-					
-						if(scrollable.length > 0){
-							//is the scrollbar at the start of the scroll?
-							if(isScrolled('top', scrollable)){
-								$.fn.fullpage.moveSlideUp();
-							}
-							else{
-								return true;
-							}
-						}else{
-							// moved up
-							$.fn.fullpage.moveSlideUp();
-						}
-					}
-				}
-			}
-		});
+        if (!isMoving) { //if theres any #
+          var scrollable = $('.section.active').find('.scrollable');
+
+          touchEndY = e.touches[0].pageY;
+          touchEndX = e.touches[0].pageX;
+          if(touchStartY > touchEndY){
+            if(scrollable.length > 0 ){
+              //is the scrollbar at the end of the scroll?
+              if(isScrolled('bottom', scrollable)){
+                $.fn.fullpage.moveSlideDown();
+              }else{
+                return true;
+              }
+            }else{
+              // moved down
+              $.fn.fullpage.moveSlideDown();
+            }
+          } else {
+
+            if(scrollable.length > 0){
+              //is the scrollbar at the start of the scroll?
+              if(isScrolled('top', scrollable)){
+                $.fn.fullpage.moveSlideUp();
+              }
+              else{
+                return true;
+              }
+            }else{
+              // moved up
+              $.fn.fullpage.moveSlideUp();
+            }
+          }
+        }
+      }
+    }
+
+		$(document).on('touchmove', $.fn.fullpage.ontouchmove);
+
+    $.fn.fullpage.ontouchstart = function(event){
+      if(options.autoScrolling && isTablet){
+        var e = event.originalEvent;
+        touchStartY = e.touches[0].pageY;
+      }
+    }
 		
-		$(document).on('touchstart', function(event){
-			if(options.autoScrolling && isTablet){
-				var e = event.originalEvent;
-				touchStartY = e.touches[0].pageY;
-			}
-		});
+		$(document).on('touchstart', $.fn.fullpage.ontouchstart);
 		
 
 
@@ -315,61 +326,60 @@
 		 * http://blogs.sitepointstatic.com/examples/tech/mouse-wheel/index.html
 		 * http://www.sitepoint.com/html5-javascript-mouse-wheel/
 		 */
-		var sq = {};
-		sq = document;
 
-		function MouseWheelHandler() {
-			return function(e) {
-				if(options.autoScrolling){
-					// cross-browser wheel delta
-					e = window.event || e;
-					var delta = Math.max(-1, Math.min(1,
-							(e.wheelDelta || -e.detail)));
+    $.fn.fullpage.MouseWheelHandler = function(e) {
 
-					if (!isMoving) { //if theres any #
-						var scrollable = $('.section.active').find('.scrollable');
-					
-						//scrolling down?
-						if (delta < 0) {
-							if(scrollable.length > 0 ){
-								//is the scrollbar at the end of the scroll?
-								if(isScrolled('bottom', scrollable)){
-									$.fn.fullpage.moveSlideDown();
-								}else{
-									return true; //normal scroll
-								}
-							}else{
-								$.fn.fullpage.moveSlideDown();
-							}
-						}
+      if(options.autoScrolling){
+        // cross-browser wheel delta
+        e = window.event || e;
+        var delta = Math.max(-1, Math.min(1,
+            (e.wheelDelta || -e.detail)));
 
-						//scrolling up?
-						else {
-							if(scrollable.length > 0){
-								//is the scrollbar at the start of the scroll?
-								if(isScrolled('top', scrollable)){
-									$.fn.fullpage.moveSlideUp();
-								}else{
-									return true; //normal scroll
-								}
-							}else{
-								$.fn.fullpage.moveSlideUp();
-							}
-						}
-					}
+        if (!isMoving) { //if theres any #
+          var scrollable = $('.section.active').find('.scrollable');
 
-					return false;
-				};
-			}
+          //scrolling down?
+          if (delta < 0) {
+            if(scrollable.length > 0 ){
+              //is the scrollbar at the end of the scroll?
+              if(isScrolled('bottom', scrollable)){
+                $.fn.fullpage.moveSlideDown();
+              }else{
+                return true; //normal scroll
+              }
+            }else{
+              $.fn.fullpage.moveSlideDown();
+            }
+          }
+
+          //scrolling up?
+          else {
+            if(scrollable.length > 0){
+              //is the scrollbar at the start of the scroll?
+              if(isScrolled('top', scrollable)){
+                $.fn.fullpage.moveSlideUp();
+              }else{
+                return true; //normal scroll
+              }
+            }else{
+              $.fn.fullpage.moveSlideUp();
+            }
+          }
+        }
+
+        return false;
+      }
+
 		}
 
+    $(document).on('mousewheel DOMMouseScroll', $.fn.fullpage.MouseWheelHandler);
 		
-		if (sq.addEventListener) {
-			sq.addEventListener("mousewheel", MouseWheelHandler(), false);
-			sq.addEventListener("DOMMouseScroll", MouseWheelHandler(), false);
-		} else {
-			sq.attachEvent("onmousewheel", MouseWheelHandler());
-		}
+//		if (sq.addEventListener) {
+//			sq.addEventListener("mousewheel", MouseWheelHandler(), false);
+//			sq.addEventListener("DOMMouseScroll", MouseWheelHandler(), false);
+//		} else {
+//			sq.attachEvent("onmousewheel", MouseWheelHandler());
+//		}
 		
 		$.fn.fullpage.moveSlideUp = function(){
 			var prev = $('.section.active').prev('.section');
@@ -414,7 +424,7 @@
 		function scrollPage(element, callback) {
 			var scrollOptions = {}, scrolledElement;
 			var dest = element.position();
-			var dtop = dest !== null ? dest.top : null;
+			var dtop = (typeof dest !== 'undefined') ? dest.top : null;
 			var yMovement = getYmovement(element);
 			var anchorLink  = element.data('anchor');
 			var sectionIndex = element.index('.section');
@@ -519,60 +529,65 @@
 			}
 		}
 
+    $.fn.fullpage.onhashchange = function(){
+      if(!isScrolling){
+        var value =  window.location.hash.replace('#', '').split('/');
+        var section = value[0];
+
+        /*in order to call scrollpage() only once for each destination at a time
+         It is called twice for each scroll otherwise, as in case of using anchorlinks `hashChange`
+         event is fired on every scroll too.*/
+        if (section !== lastScrolledDestiny) {
+
+          var element = $('[data-anchor="'+section+'"]');
+
+          scrollPage(element);
+        }
+      }
+    }
+
 		//detecting any change on the URL to scroll to the given anchor link
 		//(a way to detect back history button as we play with the hashes on the URL)
-		$(window).on('hashchange',function(){
-			if(!isScrolling){
-				var value =  window.location.hash.replace('#', '').split('/');
-				var section = value[0];
-
-				/*in order to call scrollpage() only once for each destination at a time
-				It is called twice for each scroll otherwise, as in case of using anchorlinks `hashChange` 
-				event is fired on every scroll too.*/
-				if (section !== lastScrolledDestiny) {
-	
-					var element = $('[data-anchor="'+section+'"]');
-
-					scrollPage(element);
-				}
-			}
-		});
+		$(window).on('hashchange', $.fn.fullpage.onhashchange);
 			
 		
 		/**
 		 * Sliding with arrow keys, both, vertical and horizontal
 		 */
-		$(document).keydown(function(e) {
-			//Moving the mian page with the keyboard arrows
-			if (!isMoving) {
-				switch (e.which) {
-				//up
-				case 38:
-				case 33:
-					$.fn.fullpage.moveSlideUp();
-					break;
+    $.fn.fullpage.onkeydown = function(e) {
+      //Moving the mian page with the keyboard arrows
+      console.log('keydown');
+      if (!isMoving) {
+        switch (e.which) {
+          //up
+          case 38:
+          case 33:
+            $.fn.fullpage.moveSlideUp();
+            break;
 
-				//down
-				case 40:
-				case 34:
-					$.fn.fullpage.moveSlideDown();
-					break;
+          //down
+          case 40:
+          case 34:
+            $.fn.fullpage.moveSlideDown();
+            break;
 
-				//left
-				case 37:
-					$('.section.active').find('.controlArrow.prev').trigger('click');
-					break;
+          //left
+          case 37:
+            $('.section.active').find('.controlArrow.prev').trigger('click');
+            break;
 
-				//right
-				case 39:
-					$('.section.active').find('.controlArrow.next').trigger('click');
-					break;
+          //right
+          case 39:
+            $('.section.active').find('.controlArrow.next').trigger('click');
+            break;
 
-				default:
-					return; // exit this handler for other keys
-				}
-			}
-		});
+          default:
+            return; // exit this handler for other keys
+        }
+      }
+    }
+
+		$(document).on('keydown', $.fn.fullpage.onkeydown);
 		
 		$(document).on('click', '#fullPage-nav a', function(e){
 			e.preventDefault();
