@@ -7,7 +7,8 @@
       "iron-router": {},
       "bootstrap3-less": {},
       "sugarjs": {},
-      "nprogress": {}
+      "nprogress": {},
+      "jqueryui": {}
     },
     "packages": {
       "accounts-entry": {
@@ -39,6 +40,11 @@
         "git": "https://github.com/zhouzhuojie/meteor-nprogress.git",
         "tag": "v0.0.3",
         "commit": "ffd1c5dd400af64121197f4e637a215c4b6b1fc7"
+      },
+      "jqueryui": {
+        "git": "https://github.com/mizzao/meteor-jqueryui.git",
+        "tag": "v1.10.3",
+        "commit": "c1c44a17c2e2d92e206dc4ecbaad0b83272de85c"
       }
     }
   }

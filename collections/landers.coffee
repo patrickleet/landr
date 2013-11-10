@@ -41,6 +41,6 @@ Meteor.methods
     landerId = landers.insert lander
     return lander.url
 
-  increaseLanderViews: (landerId) ->
-    check(landerId, String)
-    landers.update(landerId, {$inc: {views: 1}})
+  increaseLanderViews: (url) ->
+    check(url, String)
+    landers.update({url: url}, {$inc: {views: 1}})
