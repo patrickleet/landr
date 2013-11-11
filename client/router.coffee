@@ -134,10 +134,6 @@ Router.map ->
     yieldTemplates:
       'dashboardNavbar': {to: 'navbar'}
 
-
-
-
-
   @route 'leads',
     path: ':_id/leads'
     layoutTemplate: 'dashboardLayout'
